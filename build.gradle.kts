@@ -17,7 +17,6 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
 
-    implementation("io.zeko:zeko-sql-builder:1.5.6")
     implementation("mysql:mysql-connector-java:8.0.33")
 }
 
