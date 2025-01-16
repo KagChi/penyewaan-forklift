@@ -7,7 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "org.nezu"
+group = "my.id.kagchi"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -27,14 +27,14 @@ tasks.withType<KotlinCompile> {
 }
 
 application {
-    mainClass.set("org.nezu.Main")
+    mainClass.set("my.id.kagchi.Main")
 }
 
 tasks.withType<Jar> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Main-Class"] = "org.nezu.Main"
+        attributes["Main-Class"] = "my.id.kagchi.Main"
     }
 
     from(sourceSets.main.get().output)

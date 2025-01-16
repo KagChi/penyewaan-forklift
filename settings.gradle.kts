@@ -1,3 +1,3 @@
 
-rootProject.name = "kotlin-template"
+rootProject.name = "penyewaan-forklift"
 
