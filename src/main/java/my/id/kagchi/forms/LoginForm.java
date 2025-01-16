@@ -1,6 +1,5 @@
 package my.id.kagchi.forms;
 
-import io.zeko.db.sql.Query;
 import my.id.kagchi.QueryBuilder;
 import my.id.kagchi.Util;
 import my.id.kagchi.core.Database;
@@ -8,7 +7,6 @@ import my.id.kagchi.forms.pages.Home;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
 
 public class LoginForm extends BaseForm {
     public LoginForm() {
