@@ -52,4 +52,23 @@ public class Database {
             conn.close();
         }
     }
+
+    public static boolean executeUpdateStatement(String sql) throws SQLException {
+        Connection conn = Database.getConnection();
+
+        if (conn == null || !conn.isValid(2)) {
+            throw new SQLException("Failed to establish a valid connection to the database.");
+        }
+
+        Statement stmt = conn.createStatement();
+
+        try {
+            int affectedRows = stmt.executeUpdate(sql);
+            return affectedRows > 0;
+        } finally {
+            stmt.close();
+            conn.close();
+        }
+    }
+
 }

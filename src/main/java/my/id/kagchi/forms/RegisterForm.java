@@ -8,12 +8,12 @@ import my.id.kagchi.forms.pages.Home;
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginForm extends BaseForm {
-    public LoginForm() {
-        super("Login");
+public class RegisterForm extends BaseForm {
+    public RegisterForm() {
+        super("Register");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 320);
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel();
@@ -21,7 +21,7 @@ public class LoginForm extends BaseForm {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainPanel.setBackground(new Color(240, 240, 240));
 
-        JLabel titleLabel = new JLabel("Login to Your Account");
+        JLabel titleLabel = new JLabel("Register Account");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setForeground(new Color(50, 50, 150));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -32,6 +32,13 @@ public class LoginForm extends BaseForm {
         JTextField usernameField = new JTextField(20);
         usernameField.setMaximumSize(new Dimension(200, 30));
         usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JTextField emailField = new JTextField(20);
+        emailField.setMaximumSize(new Dimension(200, 30));
+        emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -54,14 +61,17 @@ public class LoginForm extends BaseForm {
         registerButton.setFocusPainted(false);
         registerButton.setFont(new Font("Arial", Font.BOLD, 14));
 
-        buttonPanel.add(loginButton);
-        buttonPanel.add(resetButton);
         buttonPanel.add(registerButton);
+        buttonPanel.add(resetButton);
+        buttonPanel.add(loginButton);
 
         mainPanel.add(titleLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         mainPanel.add(usernameLabel);
         mainPanel.add(usernameField);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        mainPanel.add(emailLabel);
+        mainPanel.add(emailField);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(passwordLabel);
         mainPanel.add(passwordField);
@@ -72,47 +82,50 @@ public class LoginForm extends BaseForm {
 
         resetButton.addActionListener(e -> {
             usernameField.setText("");
+            emailField.setText("");
             passwordField.setText("");
         });
 
         registerButton.addActionListener(e -> {
-            setVisible(false);
-            SwingUtilities.invokeLater(() -> {
-                RegisterForm registerForm = new RegisterForm();
-                registerForm.setVisible(true);
-            });
-        });
-
-        loginButton.addActionListener(e -> {
             String username = usernameField.getText();
+            String email = emailField.getText();
             String password = Util.hashWithMD5(passwordField.getText());
 
             try {
                 String query = new QueryBuilder()
-                        .select("*")
-                        .from("users")
-                        .where(String.format("username = '%s'", username))
-                        .where(String.format("password = '%s'", password))
-                        .limit(1)
+                        .insert("username", "email", "password")
+                        .values(String.format("'%s'", username), String.format("'%s'", email), String.format("'%s'", password))
+                        .to("users")
                         .build();
 
-                var result = Database.executeStatement(query);
-                if (result.isEmpty()) {
-                    this.showMessage("Akun tidak ditemukan!");
-                    return;
+                var result = Database.executeUpdateStatement(query);
+                if (result) {
+                    usernameField.setText("");
+                    emailField.setText("");
+                    passwordField.setText("");
+
+                    this.showMessage("Sukses mendaftarkan akun!");
+                    setVisible(false);
+
+                    SwingUtilities.invokeLater(() -> {
+                        LoginForm loginForm = new LoginForm();
+                        loginForm.setVisible(true);
+                    });
+
+                } else {
+                    this.showMessage("Kesalahan saat menyimpan!");
                 }
-
-                var firstResult = result.get(0);
-                this.showMessage(String.format("Selamat datang %s", firstResult.get("username")));
-                setVisible(false);
-
-                SwingUtilities.invokeLater(() -> {
-                    Home home = new Home();
-                    home.setVisible(true);
-                });
             } catch (Exception ex) {
                 this.showErrorMessage(ex);
             }
+        });
+
+        loginButton.addActionListener(e -> {
+            setVisible(false);
+            SwingUtilities.invokeLater(() -> {
+                LoginForm loginForm = new LoginForm();
+                loginForm.setVisible(true);
+            });
         });
     }
 }
