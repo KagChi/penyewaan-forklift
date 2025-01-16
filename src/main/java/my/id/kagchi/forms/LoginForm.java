@@ -1,11 +1,18 @@
 package my.id.kagchi.forms;
 
+import io.zeko.db.sql.Query;
+import my.id.kagchi.QueryBuilder;
+import my.id.kagchi.Util;
+import my.id.kagchi.core.Database;
+import my.id.kagchi.forms.pages.Home;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
 
-public class LoginForm extends JFrame {
-    public LoginForm(String title) {
-        setTitle(String.format("%s - Login", title));
+public class LoginForm extends BaseForm {
+    public LoginForm() {
+        super("Login");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
@@ -38,7 +45,6 @@ public class LoginForm extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         JButton loginButton = new JButton("Login");
         JButton resetButton = new JButton("Reset");
-        JButton daftarButton = new JButton("Daftar");
 
         loginButton.setFocusPainted(false);
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
@@ -46,12 +52,8 @@ public class LoginForm extends JFrame {
         resetButton.setFocusPainted(false);
         resetButton.setFont(new Font("Arial", Font.BOLD, 14));
 
-        daftarButton.setFocusPainted(false);
-        daftarButton.setFont(new Font("Arial", Font.BOLD, 14));
-
         buttonPanel.add(loginButton);
         buttonPanel.add(resetButton);
-        buttonPanel.add(daftarButton);
 
         mainPanel.add(titleLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -70,13 +72,36 @@ public class LoginForm extends JFrame {
             passwordField.setText("");
         });
 
-        daftarButton.addActionListener(e -> {
-            setVisible(false);
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = Util.hashWithMD5(passwordField.getText());
 
-            SwingUtilities.invokeLater(() -> {
-                SignUpForm signUpForm = new SignUpForm(title);
-                signUpForm.setVisible(true);
-            });
+            try {
+                String query = new QueryBuilder()
+                        .select("*")
+                        .from("users")
+                        .where(String.format("username = '%s'", username))
+                        .where(String.format("password = '%s'", password))
+                        .limit(1)
+                        .build();
+
+                var result = Database.executeStatement(query);
+                if (result.isEmpty()) {
+                    this.showMessage("Akun tidak ditemukan!");
+                    return;
+                }
+
+                var firstResult = result.get(0);
+                this.showMessage(String.format("Selamat datang %s", firstResult.get("username")));
+                setVisible(false);
+
+                SwingUtilities.invokeLater(() -> {
+                    Home home = new Home();
+                    home.setVisible(true);
+                });
+            } catch (Exception ex) {
+                this.showErrorMessage(ex);
+            }
         });
     }
 }
