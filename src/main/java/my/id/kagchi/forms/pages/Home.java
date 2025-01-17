@@ -79,6 +79,7 @@ public class Home extends BaseForm {
             JButton button = createNavButton(action);
             sidebarPanel.add(button);
             sidebarPanel.add(Box.createVerticalStrut(5));
+            button.addActionListener(e -> handleUserAction(action));
         }
 
         sidebarPanel.add(Box.createVerticalStrut(20));
@@ -131,6 +132,12 @@ public class Home extends BaseForm {
     private void handleAdminAction(String action) {
         switch (action) {
             case "Add Forklift" -> cardLayout.show(mainPanel, "AddForklift");
+        }
+    }
+
+    private void handleUserAction(String action) {
+        switch (action) {
+            case "Home" -> cardLayout.show(mainPanel, "MainContent");
         }
     }
 
