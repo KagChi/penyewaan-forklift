@@ -99,12 +99,12 @@ public class LoginForm extends BaseForm {
 
                 var result = Database.executeStatement(query);
                 if (result.isEmpty()) {
-                    this.showMessage("Akun tidak ditemukan!");
+                    showMessage("Akun tidak ditemukan!");
                     return;
                 }
 
                 var firstResult = result.get(0);
-                this.showMessage(String.format("Selamat datang %s", firstResult.get("username")));
+                showMessage(String.format("Selamat datang %s", firstResult.get("username")));
 
                 Session session = new Session()
                         .setId(Integer.parseInt(firstResult.get("id").toString()))
@@ -119,7 +119,7 @@ public class LoginForm extends BaseForm {
                     home.setVisible(true);
                 });
             } catch (Exception ex) {
-                this.showErrorMessage(ex);
+                showErrorMessage(ex);
             }
         });
     }
