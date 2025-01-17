@@ -1,8 +1,10 @@
 package my.id.kagchi.forms;
 
+import my.id.kagchi.Main;
 import my.id.kagchi.QueryBuilder;
 import my.id.kagchi.Util;
 import my.id.kagchi.core.Database;
+import my.id.kagchi.core.Session;
 import my.id.kagchi.forms.pages.Home;
 
 import javax.swing.*;
@@ -89,10 +91,9 @@ public class LoginForm extends BaseForm {
 
             try {
                 String query = new QueryBuilder()
-                        .select("*")
+                        .select("id", "username", "role")
                         .from("users")
-                        .where(String.format("username = '%s'", username))
-                        .where(String.format("password = '%s'", password))
+                        .where(String.format("username = '%s'", username), String.format("password = '%s'", password))
                         .limit(1)
                         .build();
 
@@ -104,6 +105,13 @@ public class LoginForm extends BaseForm {
 
                 var firstResult = result.get(0);
                 this.showMessage(String.format("Selamat datang %s", firstResult.get("username")));
+
+                Session session = new Session()
+                        .setId(Integer.parseInt(firstResult.get("id").toString()))
+                        .setUsername(firstResult.get("username").toString())
+                        .setRole(firstResult.get("role").toString());
+
+                Main.setSession(session);
                 setVisible(false);
 
                 SwingUtilities.invokeLater(() -> {
