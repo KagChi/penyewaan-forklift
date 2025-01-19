@@ -91,6 +91,11 @@ public class NewForklift extends JPanel {
             Number priceValue = (Number) priceField.getValue();
             double price = priceValue != null ? priceValue.doubleValue() : 0.0;
 
+            if (name.equals("Enter forklift name") || description.equals("Enter forklift description")) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields");
+                return;
+            }
+
             try {
                 String query = new QueryBuilder()
                         .insert("name", "description", "price")
@@ -102,7 +107,7 @@ public class NewForklift extends JPanel {
                 if (result) {
                     nameField.setText("");
                     descriptionField.setText("");
-                    priceField.setText("");
+                    priceField.setValue("");
 
                     JOptionPane.showMessageDialog(this, "Sukses membuat forklift baru!");
                 } else {
