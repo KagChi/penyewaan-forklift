@@ -65,6 +65,11 @@ public class QueryBuilder {
         return this;
     }
 
+    public QueryBuilder delete() {
+        this.queryType = "DELETE";
+        return this;
+    }
+
     public String build() {
         StringBuilder sb = new StringBuilder();
 
@@ -103,7 +108,7 @@ public class QueryBuilder {
 
             case "UPDATE":
                 sb.append("UPDATE ");
-                sb.append(tables.get(0)); // Assume only one table for UPDATE
+                sb.append(tables.get(0));
 
                 sb.append(" SET ");
                 for (int i = 0; i < values.size(); i++) {
@@ -126,7 +131,7 @@ public class QueryBuilder {
 
             case "INSERT":
                 sb.append("INSERT INTO ");
-                sb.append(tables.get(0)); // Assume only one table for INSERT
+                sb.append(tables.get(0));
 
                 sb.append(" (");
                 for (int i = 0; i < columns.size(); i++) {
@@ -144,6 +149,21 @@ public class QueryBuilder {
                     }
                 }
                 sb.append(")");
+                break;
+
+            case "DELETE":
+                sb.append("DELETE FROM ");
+                sb.append(tables.get(0));
+
+                if (!conditions.isEmpty()) {
+                    sb.append(" WHERE ");
+                    for (int i = 0; i < conditions.size(); i++) {
+                        sb.append(conditions.get(i));
+                        if (i < conditions.size() - 1) {
+                            sb.append(" AND ");
+                        }
+                    }
+                }
                 break;
 
             default:

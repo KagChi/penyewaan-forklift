@@ -2,6 +2,7 @@ package my.id.kagchi.forms.pages;
 
 import my.id.kagchi.Main;
 import my.id.kagchi.forms.BaseForm;
+import my.id.kagchi.forms.pages.admin.ListForklift;
 import my.id.kagchi.forms.pages.admin.NewForklift;
 
 import javax.swing.*;
@@ -48,6 +49,7 @@ public class Home extends BaseForm {
 
         mainPanel.add(createMainContent(), "MainContent");
         mainPanel.add(new NewForklift(), "AddForklift");
+        mainPanel.add(new ListForklift(), "ListForklift");
 
         JPanel westContainer = new JPanel(new BorderLayout());
         westContainer.setPreferredSize(new Dimension(220, getHeight()));
@@ -132,6 +134,7 @@ public class Home extends BaseForm {
     private void handleAdminAction(String action) {
         switch (action) {
             case "Add Forklift" -> cardLayout.show(mainPanel, "AddForklift");
+            case "List Forklift" -> cardLayout.show(mainPanel, "ListForklift");
         }
     }
 

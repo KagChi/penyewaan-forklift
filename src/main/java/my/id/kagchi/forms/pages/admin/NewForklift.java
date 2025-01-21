@@ -107,7 +107,7 @@ public class NewForklift extends JPanel {
                 if (result) {
                     nameField.setText("");
                     descriptionField.setText("");
-                    priceField.setValue("");
+                    priceField.setValue(0);
 
                     JOptionPane.showMessageDialog(this, "Sukses membuat forklift baru!");
                 } else {

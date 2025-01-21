@@ -71,4 +71,7 @@ public class Database {
         }
     }
 
+    public static boolean executeDeleteStatement(String sql) throws SQLException {
+        return executeUpdateStatement(sql);
+    }
 }
