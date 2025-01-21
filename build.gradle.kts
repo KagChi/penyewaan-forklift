@@ -28,6 +28,10 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "13"
 }
 
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("--enable-preview")
+}
+
 application {
     mainClass.set("my.id.kagchi.Main")
 }
