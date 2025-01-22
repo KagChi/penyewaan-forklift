@@ -18,6 +18,7 @@ dependencies {
     testImplementation(kotlin("test"))
 
     implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("com.toedter:jcalendar:1.4")
 }
 
 tasks.test {

@@ -10,6 +10,7 @@ public class QueryBuilder {
     private final List<String> tables;
     private final List<String> conditions;
     private final List<String> values;
+    private final List<String> joins;
     private String queryType;
     private Integer limit;
 
@@ -18,6 +19,7 @@ public class QueryBuilder {
         this.tables = new ArrayList<>();
         this.conditions = new ArrayList<>();
         this.values = new ArrayList<>();
+        this.joins = new ArrayList<>();
         this.queryType = "SELECT";
         this.limit = null;
     }
@@ -70,6 +72,11 @@ public class QueryBuilder {
         return this;
     }
 
+    public QueryBuilder join(String table, String condition) {
+        this.joins.add("JOIN " + table + " ON " + condition);
+        return this;
+    }
+
     public String build() {
         StringBuilder sb = new StringBuilder();
 
@@ -88,6 +95,12 @@ public class QueryBuilder {
                     sb.append(tables.get(i));
                     if (i < tables.size() - 1) {
                         sb.append(", ");
+                    }
+                }
+
+                if (!joins.isEmpty()) {
+                    for (String join : joins) {
+                        sb.append(" ").append(join);
                     }
                 }
 

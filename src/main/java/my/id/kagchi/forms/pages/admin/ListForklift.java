@@ -71,7 +71,7 @@ public class ListForklift extends JPanel {
         titlePanel.add(titleLabel);
         add(titlePanel, BorderLayout.NORTH);
 
-        String[] columnNames = {"ID", "Name", "Price"};
+        String[] columnNames = {"ID", "Name", "Description", "Price"};
         tableModel = new DefaultTableModel(columnNames, 0);
         table = new JTable(tableModel);
         table.setFillsViewportHeight(true);
@@ -104,7 +104,7 @@ public class ListForklift extends JPanel {
     private void fetchForkliftData() {
         try {
             String query = new QueryBuilder()
-                    .select("*")
+                    .select("id", "name", "description", "price")
                     .from("forklifts")
                     .build();
 
@@ -115,6 +115,7 @@ public class ListForklift extends JPanel {
                 Vector<Object> row = new Vector<>();
                 row.add(val.get("id").toString());
                 row.add(val.get("name").toString());
+                row.add(val.get("description").toString());
                 row.add(val.get("price").toString());
                 tableModel.addRow(row);
             }

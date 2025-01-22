@@ -3,7 +3,10 @@ package my.id.kagchi.forms.pages;
 import my.id.kagchi.Main;
 import my.id.kagchi.forms.BaseForm;
 import my.id.kagchi.forms.pages.admin.ListForklift;
+import my.id.kagchi.forms.pages.admin.ListRequest;
 import my.id.kagchi.forms.pages.admin.NewForklift;
+import my.id.kagchi.forms.pages.user.ListAvailableForklift;
+import my.id.kagchi.forms.pages.user.ListRentedForklift;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -50,6 +53,9 @@ public class Home extends BaseForm {
         mainPanel.add(createMainContent(), "MainContent");
         mainPanel.add(new NewForklift(), "AddForklift");
         mainPanel.add(new ListForklift(), "ListForklift");
+        mainPanel.add(new ListRequest(), "ListRequest");
+        mainPanel.add(new ListAvailableForklift(), "ListAvailableForklift");
+        mainPanel.add(new ListRentedForklift(), "ListRentedForklift");
 
         JPanel westContainer = new JPanel(new BorderLayout());
         westContainer.setPreferredSize(new Dimension(220, getHeight()));
@@ -74,7 +80,9 @@ public class Home extends BaseForm {
         sidebarPanel.add(headerLabel);
 
         String[] userActions = {
-                "Home"
+                "Home",
+                "List Forklift",
+                "List Rented"
         };
 
         for (String action : userActions) {
@@ -118,7 +126,7 @@ public class Home extends BaseForm {
         sidebarPanel.add(headerLabel);
 
         String[] adminActions = {
-                "Add Forklift", "List Forklift"
+                "Add Forklift", "List Forklift", "List Request"
         };
 
         for (String action : adminActions) {
@@ -135,12 +143,15 @@ public class Home extends BaseForm {
         switch (action) {
             case "Add Forklift" -> cardLayout.show(mainPanel, "AddForklift");
             case "List Forklift" -> cardLayout.show(mainPanel, "ListForklift");
+            case "List Request" -> cardLayout.show(mainPanel, "ListRequest");
         }
     }
 
     private void handleUserAction(String action) {
         switch (action) {
             case "Home" -> cardLayout.show(mainPanel, "MainContent");
+            case "List Forklift" -> cardLayout.show(mainPanel, "ListAvailableForklift");
+            case "List Rented" -> cardLayout.show(mainPanel, "ListRentedForklift");
         }
     }
 
